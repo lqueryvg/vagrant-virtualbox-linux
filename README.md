@@ -15,4 +15,5 @@
 - move vars into yaml file (for vm)
 - create vars in centos7.json (packer)
 - move directory structure into this README
-- 
+- remove doit.sh
+- use Makefile
