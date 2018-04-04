@@ -1,0 +1,6 @@
+---
+vm_hostname: centos7
+host_name: 
+ssh_forwarded_port: 
+box_name: 
+ssh_public_key: 

@@ -1,0 +1,104 @@
+---
+
+- hosts: all
+  gather_facts: true
+  become: True
+  vars:
+    timezone: Europe/London
+    user: john
+    keyboard: uk   # console or us
+    locale: en_GB.utf8  # LANG or en_US.utf8
+
+  tasks:
+
+  - name: set timezone
+    timezone:
+      name: "{{ timezone }}"
+
+  - name: bash vi mode
+    copy:
+      content: |
+        set -o vi
+        export EDITOR=vi
+      dest: /etc/profile.d/bash_vi.sh
+      
+  - name: create user
+    user:
+      name: "{{ user }}"
+      uid: 2000
+  
+  - name: Configure users .ssh directory.
+    file:
+      path: "/home/{{ user }}/.ssh"
+      state: directory
+      owner: "{{ user }}"
+      group: "{{ user }}"
+      mode: 0700
+
+  - name: set authorized_key
+    authorized_key:
+      user: "{{ user }}"
+      state: present
+      key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+
+  - name: sudoers entry for user
+    copy:
+      content: "{{ user }}        ALL=(ALL)       NOPASSWD: ALL\n"
+      dest: "/etc/sudoers.d/{{ user }}"
+
+  - name: Ensure necessary packages are installed.
+    yum: "name={{ item }} state=present"
+    with_items:
+    - gpm
+    - docker
+    - python34
+    - python34-devel
+    - rsync
+    - openssl-devel
+    - bc
+    - git
+    - vim
+    - strace
+
+  - name: add docker to user groups
+    user:
+      name: "{{ user }}"
+      groups: dockerroot
+      append: yes
+
+  - name: docker daemon group
+    copy:
+      content: "{ \"group\": \"dockerroot\" }\n"
+      dest: /etc/docker/daemon.json
+
+  - name: docker restart
+    systemd: state=restarted name=docker
+
+  - name: set console keyboard map
+    command: loadkeys uk
+
+  - name: set LANG
+    command: "localectl set-locale LANG={{ locale }}"
+
+  - name: get pip installer
+    get_url:
+      url: https://bootstrap.pypa.io/get-pip.py
+      dest: /tmp/get-pip.py
+
+  - name: install pip
+    command: /usr/bin/python3.4 /tmp/get-pip.py
+
+  - name: link to host Downloads
+    file:
+      src: /host_home/Downloads
+      dest: "/home/{{ user }}/Downloads"
+      state: link
+
+# CHECK THAT THE TIME AFTER SLEEP WORKS !!!
+
+# - name: copy shell settings
+# mount host vm
+# home sym links
+# install brew
+# port forwarding port conflict ?
+# 
