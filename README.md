@@ -15,8 +15,10 @@ The VM will have the following features:
   - timezone
 - ssh authorized keys for the configured user (assuming you provide the public key)
 - bash with vi mode as default
-- sudo root access with NOPASSWD for the user
-- various fundamental packages, e.g. docker & git
+- sudo root access with `NOPASSWD` for the user
+- various fundamental packages, e.g. `docker` & `git`
+- user configured to be in docker group (no need to be root to use docker)
+- docker starts without selinux
 - The host machine user's home directory mapped via Virtualbox share (vboxsf) to `/host_home`
 
 ## Pre-requisites
@@ -24,7 +26,7 @@ The VM will have the following features:
 - a `.box` file created using [packer-linux-vagrant-box](https://github.com/lqueryvg/packer-linux-vagrant-virtualbox)
 - [Vagrant](http://vagrantup.com/)
 - [VirtualBox](https://www.virtualbox.org/) (if you want to build the VirtualBox box)
-- an ssh public key in ~/.ssh/id_rsa.pub (configurable)
+- an ssh public key in `~/.ssh/id_rsa.pub` (configurable)
   - to generate a key pair on Windows, see [here](https://www.ssh.com/ssh/putty/windows/puttygen)
 
 ## Usage
@@ -35,7 +37,7 @@ The VM will have the following features:
 ## Directory Structure
 
     .
-    ├── conf.rb        # <<<-- user configuration
+    ├── conf.rb        # <<<── user configuration
     ├── README.md
     ├── Vagrantfile    # do not edit
     └── src/           # source scripts
