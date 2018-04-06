@@ -1,29 +1,23 @@
 # -*- mode: ruby -*-
 
 Config.vars = {
-  # offline_testing:          "true",    # set this to anything when testing offline to skip certain provisioning steps
+  # offline_testing:          "true",    # set to anything when testing offline (skips certain provisioning steps)
 
-  # box_name:   "centos72-72-1511",
-  # this maps to 
-  box_name:   "centos72-7511",
-  
+  box_name:   "centos72-7511",    # mandatory
   # vm_name:  "fred",             # defaults to {box_name} if not set
   # box_file:  "/tmp/jim.box",    # defaults to $HOME/packer/output/virtualbox-{box_name}.box
 
-  vm_name:    "argh",
-  memory:     "1024",
-  cpus:       "2",
+  # user_name:            "fred",                 # defaults to $USER on Windows
+  # uid:                  "1234",                 # default = 1000
+  # ssh_forwarded_port:   "1234",                 # default = 2200, must be unique on the Virtualbox host
+                                                  # this port on forwards to ssh port 22 inside the VM
+  # ssh_public_key:       "~/.ssh/id_rsa.pub",    # this is the default
 
-  locale:           "en_GB.utf8",     # en_US.UTF-8 for friends in the US
-  timezone:         "Europe/London"
-  keyboard_type:    "uk",
+  # memory:           "512",       # default = 1024 MiB
+  # cpus:             "1",         # default = 2
 
-  user_name:        "john",       # defaults to $USER on Windows
-  uid:              "1001",
-
-  # localhost will listen on this port and forward to ssh inside the VM
-  ssh_forwarded_port:   "2400",     # must be unique on the host running Virtualbox
-  ssh_public_key:       "~/.ssh/id_rsa.pub",
-
+  # locale:           "en_GB.utf8",     # en_US.UTF-8 for friends in the US
+  # timezone:         "Europe/London",
+  # keyboard_type:    "uk",
 }
 

@@ -4,9 +4,20 @@
 
 # start with config defaults, then merge user settings on top
 conf = {
-  vm_name: Config.vars[:box_name],
-  box_file: "file://" + ENV["HOME"] + "/packer/output/virtualbox-" + Config.vars[:box_name] + ".box",
-  user_name: ENV["USER"]
+  vm_name:              Config.vars[:box_name],
+  box_file:             "file://" + ENV["HOME"] + "/packer/output/virtualbox-" + Config.vars[:box_name] + ".box",
+
+  user_name:            ENV["USER"],
+  uid:                  "1000",
+  ssh_forwarded_port:   "2200",
+  ssh_public_key:       "~/.ssh/id_rsa.pub",
+
+  memory:               "1024",
+  cpus:                 "2",
+
+  locale:               "en_GB.utf8",
+  timezone:              "Europe/London",
+  keyboard_type:        "uk",
 }
 conf.merge!(Config.vars)  # merge user settings on top
 
