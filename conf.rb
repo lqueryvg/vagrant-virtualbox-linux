@@ -5,7 +5,7 @@ Config.vars = {
 
   box_name:   "centos72-7511",    # mandatory
   # vm_name:  "fred",             # defaults to {box_name} if not set
-  # box_file:  "/tmp/jim.box",    # defaults to $HOME/packer/output/virtualbox-{box_name}.box
+  # box_file:  "/tmp/jim.box",    # defaults to $HOME/virtualbox-{box_name}.box
 
   # user_name:            "fred",                 # defaults to $USER on Windows
   # uid:                  "1234",                 # default = 1000

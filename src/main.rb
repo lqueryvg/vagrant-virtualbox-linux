@@ -5,7 +5,7 @@
 # start with config defaults, then merge user settings on top
 conf = {
   vm_name:              Config.vars[:box_name],
-  box_file:             "file://" + ENV["HOME"] + "/packer/output/virtualbox-" + Config.vars[:box_name] + ".box",
+  box_file:             "file://" + ENV["HOME"] + "/virtualbox-" + Config.vars[:box_name] + ".box",
 
   user_name:            ENV["USER"],
   uid:                  "1000",

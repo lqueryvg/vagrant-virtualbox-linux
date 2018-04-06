@@ -20,12 +20,13 @@ The VM will have the following features:
 - user configured to be in docker group (no need to be root to use docker)
 - docker starts without selinux
 - The host machine user's home directory mapped via Virtualbox share (vboxsf) to `/host_home`
+- sym link from host user's Downloads to ~/Downloads inside VM
 
 ## Pre-requisites
 
+- [VirtualBox](https://www.virtualbox.org/)
 - a `.box` file created using [packer-linux-vagrant-box](https://github.com/lqueryvg/packer-linux-vagrant-virtualbox)
 - [Vagrant](http://vagrantup.com/)
-- [VirtualBox](https://www.virtualbox.org/) (if you want to build the VirtualBox box)
 - an ssh public key in `~/.ssh/id_rsa.pub` (configurable)
   - to generate a key pair on Windows, see [here](https://www.ssh.com/ssh/putty/windows/puttygen)
 
