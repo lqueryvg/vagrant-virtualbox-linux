@@ -3,11 +3,6 @@
 - hosts: all
   gather_facts: true
   become: True
-  vars:
-    timezone: Europe/London
-    user: john
-    keyboard: uk   # console or us
-    locale: en_GB.utf8  # LANG or en_US.utf8
 
   tasks:
 
@@ -21,32 +16,35 @@
         set -o vi
         export EDITOR=vi
       dest: /etc/profile.d/bash_vi.sh
-      
+  
+  # - name: print debug
+  #   debug: msg='{{ vars }}'
+
   - name: create user
     user:
-      name: "{{ user }}"
-      uid: 2000
+      name: "{{ user_name }}"
+      uid: "{{ uid }}"
   
   - name: Configure users .ssh directory.
     file:
-      path: "/home/{{ user }}/.ssh"
+      path: "/home/{{ user_name }}/.ssh"
       state: directory
-      owner: "{{ user }}"
-      group: "{{ user }}"
+      owner: "{{ user_name }}"
+      group: "{{ user_name }}"
       mode: 0700
 
   - name: set authorized_key
     authorized_key:
-      user: "{{ user }}"
+      user: "{{ user_name }}"
       state: present
       key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
 
   - name: sudoers entry for user
     copy:
-      content: "{{ user }}        ALL=(ALL)       NOPASSWD: ALL\n"
-      dest: "/etc/sudoers.d/{{ user }}"
+      content: "{{ user_name }}        ALL=(ALL)       NOPASSWD: ALL\n"
+      dest: "/etc/sudoers.d/{{ user_name }}"
 
-  - name: Ensure necessary packages are installed.
+  - name: Install packages
     yum: "name={{ item }} state=present"
     with_items:
     - gpm
@@ -59,23 +57,35 @@
     - git
     - vim
     - strace
+    - lsof
+    when: offline_testing is not defined
 
   - name: add docker to user groups
     user:
-      name: "{{ user }}"
+      name: "{{ user_name }}"
       groups: dockerroot
       append: yes
+    when: offline_testing is not defined
+    notify:
+    - restart docker
 
   - name: docker daemon group
     copy:
       content: "{ \"group\": \"dockerroot\" }\n"
       dest: /etc/docker/daemon.json
+    when: offline_testing is not defined
+    notify:
+    - restart docker
 
-  - name: docker restart
-    systemd: state=restarted name=docker
+  - replace:
+      path: /etc/sysconfig/docker
+      regexp: '--selinux-enabled *'
+      replace: ''
+      backup: yes
+    when: offline_testing is not defined
 
   - name: set console keyboard map
-    command: loadkeys uk
+    command: "loadkeys {{ keyboard_type }}"
 
   - name: set LANG
     command: "localectl set-locale LANG={{ locale }}"
@@ -84,20 +94,25 @@
     get_url:
       url: https://bootstrap.pypa.io/get-pip.py
       dest: /tmp/get-pip.py
+    when: offline_testing is not defined
 
   - name: install pip
     command: /usr/bin/python3.4 /tmp/get-pip.py
+    when: offline_testing is not defined
 
   - name: link to host Downloads
     file:
       src: /host_home/Downloads
-      dest: "/home/{{ user }}/Downloads"
+      dest: "/home/{{ user_name }}/Downloads"
       state: link
 
-# CHECK THAT THE TIME AFTER SLEEP WORKS !!!
+  handlers:
+    - name: restart docker
+      systemd: state=restarted name=docker
+
+# CHECK THAT THE TIME AFTER SUSPEND WORKS !!!
 
 # - name: copy shell settings
-# mount host vm
 # home sym links
 # install brew
 # port forwarding port conflict ?
