@@ -10,7 +10,7 @@ Config.vars = {
   # user_name:            "fred",                 # defaults to $USER on Windows
   # uid:                  "1234",                 # default = 1000
   # ssh_forwarded_port:   "1234",                 # default = 2200, must be unique on the Virtualbox host
-                                                  # this port on forwards to ssh port 22 inside the VM
+                                                  # this port forwards to ssh port 22 inside the VM
   # ssh_public_key:       "~/.ssh/id_rsa.pub",    # this is the default
 
   # memory:           "512",       # default = 1024 MiB
