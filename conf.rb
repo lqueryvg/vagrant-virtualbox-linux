@@ -16,8 +16,8 @@ Config.vars = {
   # memory:           "512",       # default = 1024 MiB
   # cpus:             "1",         # default = 2
 
-  # locale:           "en_GB.utf8",     # en_US.UTF-8 for friends in the US
-  # timezone:         "Europe/London",
-  # keyboard_type:    "uk",
+  # locale:           "en_GB.utf8",     # e.g. "en_US.UTF-8" for friends in the US
+  # timezone:         "Europe/London",  # e.g. "America/Chicago"
+  # keyboard_type:    "uk",             # e.g. "us"
 }
 
