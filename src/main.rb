@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
       v.customize [ "storageattach", :id, "--storagectl", "IDE Controller",
         "--device", "0", "--port", "0", "--type", "dvddrive", "--medium", "emptydrive" ]
       
-      # This is how you might be to provision an extra disk...
+      # This is how you might provision an extra disk...
       # home_disk = 'home_disk.vdi'
       # v.customize ['createhd', '--filename', home_disk, '--size', 20 * 1024]
       # v.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', home_disk]
@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
 
   # Provisioning...
 
-  conf[:temp_key_file] = "/tmp/id_rsa.pub"
+  conf[:temp_key_file] = "/tmp/id_rsa.pub"    # on the VM
   config.vm.provision "file", source: conf[:ssh_public_key], destination: conf[:temp_key_file]
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "src/provision/ansible/playbook.yml"
